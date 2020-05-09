@@ -4,6 +4,42 @@
 
 This is a pytorch implementation of end to end learning for autonomous vehicles.
 
+## Network Architecture
+The design of the network is based on the model used by NVIDIA for the end-to-end self driving test.
+
+### The model:
+
+- Image normalization
+- Convolution: 5x5, filter: 24, strides: 2x2, activation: ELU
+- Convolution: 5x5, filter: 36, strides: 2x2, activation: ELU
+- Convolution: 3x3, filter: 48, strides: 2x2, activation: ELU
+- Convolution: 3x3, filter: 64, strides: 1x1, activation: ELU
+- Convolution: 3x3, filter: 64, strides: 1x1, activation: ELU
+- Flatten
+- Fully connected: neurons: 100, activation: ELU
+- Fully connected: neurons:  50, activation: ELU
+- Fully connected: neurons:  10, activation: ELU
+- Fully connected: neurons:   1 (output)
+
+As per the NVIDIA model, the convolution layers are meant to handle feature engineering and the fully connected layer for predicting the steering angle. We have added the sensor datas from the Throttle, Brake and Speed to the network to enable autonomous driving.
+
+The following shows the model with details on the shapes and the number of parameters.
+
+| Layer                          |Output Shape      |Params  |Connected to     |
+|--------------------------------|------------------|-------:|-----------------|
+|lambda_1 (Lambda)               |(None, 90, 320, 3)|0       |lambda_input_1   |
+|convolution2d_1 (Convolution2D) |(None, 43,158, 24)|1824    |lambda_1         |
+|convolution2d_2 (Convolution2D) |(None, 20, 77, 36)|21636   |convolution2d_1  |
+|convolution2d_3 (Convolution2D) |(None, 8, 37, 48) |43248   |convolution2d_2  |
+|convolution2d_4 (Convolution2D) |(None, 6, 33, 64) |27712   |convolution2d_3  |
+|convolution2d_5 (Convolution2D) |(None, 4, 33, 64) |36928   |convolution2d_4  |
+|flatten_1 (Flatten)             |(None, 1152)      |0       |convolution2d_5  |
+|dense_1 (Dense)                 |(None, 100)       |115300  |flatten_1        |
+|dense_2 (Dense)                 |(None, 50)        |5050    |dense_1          |
+|dense_3 (Dense)                 |(None, 10)        |510     |dense_2          |
+|dense_4 (Dense)                 |(None, 1)         |11      |dense_3          |
+|                                |**Total params**  |251709  |                 |
+
 
 ## How to Run
 

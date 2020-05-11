@@ -120,3 +120,10 @@ python drive.py <path to model_weights>
 python drive.py models/model_19500
 
 ```
+### Training Data if needed:
+
+You have to change the path to the image directory in the driving_log.csv file to use this data to train the model. I have uploaded both the training data for both tracks.
+
+```
+https://drive.google.com/open?id=1nlyP8bC5arMCnqzGUZQVOtGIip23tWIA
+```

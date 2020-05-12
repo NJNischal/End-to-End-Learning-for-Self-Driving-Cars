@@ -134,7 +134,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     #load model
-    model = model_cnn.cuda()
+    model = model_cnn().cuda()
     model.load_state_dict(torch.load(args.model_weights))
     model.eval()
 
